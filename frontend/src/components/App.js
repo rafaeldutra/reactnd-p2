@@ -8,6 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
+// import { addPost } from '../actions'
 
 const styles = theme => ({
   root: {
@@ -18,19 +19,9 @@ const styles = theme => ({
 });
 
 class App extends Component {
-    state = {
-      Categories: [],
-  };
-
-  componentDidMount() {
-      api.getAllCategories().then(Categories => {
-          this.setState({ Categories });
-      });
-  }
-  
   render() {
-    const { posts } = this.props
-    console.log('this.props', this.props)
+    //const { posts } = this.props
+    console.log('this.props', this.props.store.getState())
     return (
       <div >
       <List component="nav">
@@ -45,7 +36,25 @@ class App extends Component {
             ))
           }
       </List>
+
+      <div>
+        <input
+          type='text'
+          ref={(input) => this.input = input}
+          placeholder="Teste algumacoisa"
+        />
+        <button onClick={this.submitCoisa}>Submit coisa</button>
+
+        <pre>
+          Digite o titulo do post aqui: {this.state.algumaCoisa}
+        </pre>
+      </div>
+
+
     </div>
+
+
+
     );
   }
 }
