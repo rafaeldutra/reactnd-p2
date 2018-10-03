@@ -1,38 +1,47 @@
+import { combineReducers } from 'redux'
+
 import{
-    GET_ALL_CATEGORIES,
+    GET_CATEGORIES,
     ADD_POST,
     REMOVE_POST,
+    ADD_COMMENT
 } from '../actions'
 
-const initialState = {
-    //categories: [],
-        posts: {},
-       // comments: [],
-    //     post:{
-    //         id: null,
-    //         timestamp: null,
-    //         title: null,
-    //         body: null,
-    //         author: null,
-    //         category: null,
-    //         voteScore: 1,
-    //         deleted: false,
 
-    //     },
-    // comments: [
-    //     {
-    //         id: null,
-    //         parentId: null,
-    //         timestamp: null,
-    //         body: null,
-    //         author: null,
-    //         voteScore: 1,
-    //         deleted: false,
-    //         parentDeleted: false
-    //     }
-    //]
+const initialState = []
 
+function categories (state = initialState, action){
+    switch(action.type){
+        case GET_CATEGORIES : 
+            return action.categories
+        default : 
+            return state
+    }
 }
+
+function comments (state = {}, action) {
+    switch(action.type) {
+        case ADD_COMMENT : 
+            return {
+                ...state,
+                ...action.comment,
+            }
+        default :
+            return state
+    }
+}
+
+
+
+// {
+//     //categories: [],
+//         posts: [
+           
+//            { post1: {
+//            title: null
+//         }},
+//         ],
+// }
 
 function posts(state = initialState, action){
     switch (action.type){
@@ -62,4 +71,8 @@ function posts(state = initialState, action){
 
 
 
-export default posts
+export default combineReducers({
+    categories,
+    comments,
+    posts,
+})

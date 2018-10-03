@@ -8,7 +8,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
-// import { addPost } from '../actions'
+import { connect } from 'react-redux';
+import { addPost, fetchCategories } from '../actions'
+
+
 
 const styles = theme => ({
   root: {
@@ -19,13 +22,30 @@ const styles = theme => ({
 });
 
 class App extends Component {
+  state = {
+    Categories: null,
+  }
+
+  componentDidMount() {
+    this.props.getAllCategories(this.state.Categories)
+    // api.getCategories().then(Categories => {
+    //   this.setState({ Categories })
+    // })
+  }
+
+  doThing = () => {
+   // this.props.dispatch(addPost({}))
+   this.props.createPost({})
+  }
+
   render() {
     //const { posts } = this.props
-    console.log('this.props', this.props.store.getState())
+    console.log('Props 1', this.props)
+    console.log('this.state', this.state)
     return (
       <div >
       <List component="nav">
-        {this.state.Categories.map(
+        {this.props.categories.map(
             categorie => (
               <ListItem button key={categorie.name}>
                 <ListItemIcon>
@@ -37,21 +57,7 @@ class App extends Component {
           }
       </List>
 
-      <div>
-        <input
-          type='text'
-          ref={(input) => this.input = input}
-          placeholder="Teste algumacoisa"
-        />
-        <button onClick={this.submitCoisa}>Submit coisa</button>
-
-        <pre>
-          Digite o titulo do post aqui: {this.state.algumaCoisa}
-        </pre>
-      </div>
-
-
-    </div>
+  </div>
 
 
 
@@ -60,5 +66,25 @@ class App extends Component {
 }
 
 
+function mapStateToProps ({posts, comments, categories}) {
+  console.log('Posts', posts)
+  console.log('Comments', comments)
+  console.log('Categories', categories)
+  return {
+    categories
+    // posts: posts.posts.map((post) => ({
+    //   title:  'teste',
+    // }))
+  }
+}
 
-export default App;
+function mapDispatchToProps(dispatch){
+  return{
+    createPost: (data) => dispatch(addPost(data)),
+    getAllCategories: () => dispatch(fetchCategories())
+    //deletePost: (data) => dispatch(removePost(data.id)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
